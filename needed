@@ -1,0 +1,25 @@
+login
+register
+database:
+	users:
+		id ai pk
+		email
+		pass_h
+		company
+		rep_name
+		rep_lname
+		pnum
+		priority bool
+
+	orders
+		id ai pk
+		c_id fk users(id)
+		weight
+		date datetime
+sessions
+scheduling:
+	enter weight -> checks database for availability -> return possible dates
+
+admin:
+	user priority
+
