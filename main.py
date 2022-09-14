@@ -11,6 +11,26 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+
+    if request.method == 'GET':
+        form = RegistrationForm()
+        return render_template('register.html', form=form)
+    else:
+        pass
+
+
+@app.route("/login", methods=['GET', 'POST'])
+def login():
+    if request.method == 'GET':
+        form = LoginForm()
+        return render_template('login.html', form=form)
+    else:
+        pass
+
+
 @app.route("/schedule", methods=['GET', 'POST'])
 def schedule():
     enable = "enable"
