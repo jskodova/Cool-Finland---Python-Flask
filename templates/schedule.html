@@ -6,7 +6,22 @@
 </head>
 <body>
     <form method="POST">
-        <input type="number" name="weight" placeholder="Post weight">
+        <fieldset {{ enable_switch }}>
+            <label>
+                <input type="number" name="weight" placeholder="Post weight">
+                <input type="submit" name="submit_weight" value="Submit">
+            </label>
+        </fieldset>
+    </form>
+    <form method = "POST">
+        <fieldset {{ disabled_switch }}>
+            <label>
+                <input type="date" name ="date">
+            </label>
+            <label>
+                <input type="time" name ="time">
+            </label>
+        </fieldset>
     </form>
 </body>
 </html>

@@ -13,10 +13,14 @@ def get_db_connection():
 
 @app.route("/schedule", methods=['GET', 'POST'])
 def schedule():
+    enable = "enable"
+    disabled = "disabled"
+
     if request.method == "POST":
-        print("Hello")
+        weight = request.form.get('weight')
+        return render_template('schedule.html', enable_switch=disabled, disabled_switch=enable)
     else:
-        return render_template('schedule.html')
+        return render_template('schedule.html', disabled_switch=disabled)
 
     if __name__ == '__main__':
         app.run(debug=True)
