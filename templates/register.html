@@ -6,6 +6,41 @@
 	<title>Register</title>
 </head>
 <body>
-	
+		
+	{% if not valid %}
+		<p>WRONG FORM INPUT</p>
+	{% else %}
+		<p>USER CREATED</p>
+	{% endif %}
+
+	<form method="POST" action="">
+		{{ form.hidden_tag() }}
+		<fieldset>
+			{{ form.email.label() }}
+			{{ form.email() }}
+
+			{{ form.passw.label() }}
+			{{ form.passw() }}
+			
+			{{ form.confirm_passw.label() }}
+			{{ form.confirm_passw() }}
+
+			{{ form.comp.label() }}
+			{{ form.comp() }}
+
+			{{ form.rep_name.label() }}
+			{{ form.rep_name() }}
+
+			{{ form.rep_lname.label() }}
+			{{ form.rep_lname() }}
+
+			{{ form.rep_pnum.label() }}
+			{{ form.rep_pnum() }}
+
+			{{ form.submit() }}
+		</fieldset>
+	</form>
+
+	<p>Already have an account? <a href="{{ url_for("login") }}"> Log in </a></p>
 </body>
 </html>

@@ -6,6 +6,28 @@
 	<title>Login</title>
 </head>
 <body>
+	
+{% if error == 1 %}
+	<p>Wrong email or password!</p>
+{% elif error == 2 %}
+	<p>Email input not email format</p>
+{% endif %}
+
+<form method="POST" action="">
+		{{ form.hidden_tag() }}
+		<fieldset>
+			{{ form.email.label() }}
+			{{ form.email() }}
+
+			{{ form.passw.label() }}
+			{{ form.passw() }}
+
+			{{ form.rem.label() }}
+			{{ form.rem() }}
+
+			{{ form.submit() }}
+		</fieldset>
+</form>
 
 </body>
 </html>
