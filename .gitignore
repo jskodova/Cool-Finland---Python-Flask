@@ -1,2 +1,4 @@
-/cfcg4
-/.idea
+\cfcg4
+\.idea
+\__pycache__
+database.db
