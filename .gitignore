@@ -1,4 +1,5 @@
-\cfcg4
-\.idea
-\__pycache__
+cfcg4/
+.idea/
+__pycache__/
+
 database.db
