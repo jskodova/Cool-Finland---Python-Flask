@@ -14,6 +14,15 @@
             </label>
         </fieldset>
     </form>
+    <form method = "POST">
+        <fieldset {{disabled_switch}}>
+            {% for i in free_Dates %}
+                <label>
+                    <input type="button" name="{{i}}" value='{{i}}'>
+                </label>
+            {% endfor %}
+        </fieldset>
+    </form>
 {% endblock content %}
 </body>
 </html>

@@ -1,8 +1,9 @@
 import sqlite3
+from datetime import date, timedelta
 from flask import Flask, render_template, request, url_for, flash, redirect
 from forms import RegistrationForm, LoginForm
+from functools import wraps
 from passlib.hash import bcrypt
-
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '7c7b7cd8dacf674501f743dfa8c57d90'
@@ -65,15 +66,16 @@ def register():
 
             print(f"{email} {passw} {h_passw} {comp} {rep_name} {rep_lname} {rep_pnum}")
 
-            conn.execute('insert into "users" (email, password, comp_name, rep_name, rep_lname, rep_pnumber, priority) values (?, ?, ?, ?, ?, ?, ?)'
-                        ,(email, h_passw, comp, rep_name, rep_lname, rep_pnum, False))
+            conn.execute(
+                'insert into "users" (email, password, comp_name, rep_name, rep_lname, rep_pnumber, priority) values (?, ?, ?, ?, ?, ?, ?)'
+                , (email, h_passw, comp, rep_name, rep_lname, rep_pnum, False))
 
             conn.commit()
             conn.close()
             return render_template('register.html', form=form, valid=valid)
 
         else:
-           return render_template('register.html', form=form, valid=not valid)
+            return render_template('register.html', form=form, valid=not valid)
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -103,19 +105,84 @@ def login():
             return render_template("login.html", form=form, error=2)
 
 
-
-
-
 @app.route("/schedule", methods=['GET', 'POST'])
-def schedule():
+def weightschedule():
+    global enable
     enable = "enable"
+
+    global disabled
     disabled = "disabled"
 
-    if request.method == "POST":
-        weight = request.form.get('weight')
-        return render_template('schedule.html', enable_switch=disabled, disabled_switch=enable)
-    else:
-        return render_template('schedule.html', disabled_switch=disabled)
+    global con
+    con = sqlite3.connect("database.db")
 
-    if __name__ == '__main__':
-        app.run(debug=True)
+    global cur
+    cur = con.cursor()
+
+    global today
+    today = date.today()
+
+    global dates
+    dates = cur.execute("SELECT weight_amount,delivery_date FROM deliveries").fetchall()
+
+    global all_Dates
+    all_Dates = list
+    all_Dates = []
+    for i in range(21):
+        free = today + timedelta(days=i)
+        day_Free = free.strftime('%Y-%m-%d')
+        all_Dates.append(day_Free)
+
+    global occupied
+    occupied = []
+    for occ in dates:
+        occupied.append(occ[1])
+
+    if request.method == "POST":
+        global weight
+        weight = request.form.get('weight')
+        # cur.execute("INSERT INTO deliveries VALUES(?, ?, ?, ?)", (3,3,20,"2022-06-24"))
+        # con.commit()
+        return redirect('/schedule/date')
+    else:
+        return render_template('schedule.html', disabled_switch=disabled, today=today, all_Dates=all_Dates,
+                               occupied=occupied)
+
+
+def weightrequire(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        try:
+            weight
+        except NameError:
+            return redirect('/schedule')
+        return f(*args, **kwargs)
+
+    return decorated_function
+
+
+@app.route("/schedule/date", methods=['GET', 'POST'])
+@weightrequire
+def dayschedule():
+    weight_Amount = []
+    for i in dates:
+        if int(i[0]) + int(weight) > 40:
+            weight_Amount.append(i[1])
+    weight_amount_set = set(weight_Amount)
+    occupied_set = set(occupied)
+
+    occupied_w_weight = list(weight_amount_set - occupied_set)
+    combined = weight_Amount + occupied_w_weight
+
+    free_dates = set(all_Dates).difference(set(combined))
+    print(free_dates)
+
+    if request.method == "POST":
+        return redirect('/schedule')
+    else:
+        return render_template('schedule_day.html', enable_switch=disabled, disabled_switch=enable, dates=dates,
+                               today=today, occupied=occupied, all_Dates=all_Dates, free_Dates=free_dates)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
