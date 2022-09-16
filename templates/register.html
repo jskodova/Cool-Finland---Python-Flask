@@ -6,38 +6,39 @@
 	<title>Register</title>
 </head>
 <body>
-		
-	{% if not valid %}
-		<p>WRONG FORM INPUT</p>
-	{% else %}
-		<p>USER CREATED</p>
+	{% if request == "POST" %}
+		{% if not valid %}
+			<p>WRONG FORM INPUT</p>
+		{% else %}
+			<p>USER CREATED</p>
+		{% endif %}
 	{% endif %}
 
 	<form method="POST" action="">
 		{{ form.hidden_tag() }}
 		<fieldset>
-			{{ form.email.label() }}
-			{{ form.email() }}
+			{{ form.email.label(class="form-control-label") }}
+			{{ form.email(class="form-control form-control-lg") }}
 
-			{{ form.passw.label() }}
-			{{ form.passw() }}
+			{{ form.passw.label(class="form-control-label") }}
+			{{ form.passw(class="form-control form-control-lg") }}
 			
-			{{ form.confirm_passw.label() }}
-			{{ form.confirm_passw() }}
+			{{ form.confirm_passw.label(class="form-control-label") }}
+			{{ form.confirm_passw(class="form-control form-control-lg") }}
 
-			{{ form.comp.label() }}
-			{{ form.comp() }}
+			{{ form.comp.label(class="form-control-label") }}
+			{{ form.comp(class="form-control form-control-lg") }}
 
-			{{ form.rep_name.label() }}
-			{{ form.rep_name() }}
+			{{ form.rep_name.label(class="form-control-label") }}
+			{{ form.rep_name(class="form-control form-control-lg") }}
 
-			{{ form.rep_lname.label() }}
-			{{ form.rep_lname() }}
+			{{ form.rep_lname.label(class="form-control-label") }}
+			{{ form.rep_lname(class="form-control form-control-lg") }}
 
-			{{ form.rep_pnum.label() }}
-			{{ form.rep_pnum() }}
+			{{ form.rep_pnum.label(class="form-control-label") }}
+			{{ form.rep_pnum(class="form-control form-control-lg") }}
 
-			{{ form.submit() }}
+			{{ form.submit(class="form-control form-control-lg") }}
 		</fieldset>
 	</form>
 

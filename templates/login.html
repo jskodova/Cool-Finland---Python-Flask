@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="../static/main.css">
 	<title>Login</title>
 </head>
 <body>
@@ -13,21 +14,24 @@
 	<p>Email input not email format</p>
 {% endif %}
 
-<form method="POST" action="">
-		{{ form.hidden_tag() }}
-		<fieldset>
-			{{ form.email.label() }}
-			{{ form.email() }}
+<div class="content-section-login">
+	<form class="test" method="POST" action="">
+	        <legend class = "logintitle">Log In</legend>
+			{{ form.hidden_tag() }}
+			<fieldset>
+				{{ form.email.label(class="form-control-label") }}
+				{{ form.email(class="form-control form-control-lg") }}
 
-			{{ form.passw.label() }}
-			{{ form.passw() }}
+				{{ form.passw.label(class="form-control-label") }}
+				{{ form.passw(class="form-control form-control-lg") }}
 
-			{{ form.rem.label() }}
-			{{ form.rem() }}
+				{{ form.rem.label(class="form-check-label-login") }}
+				{{ form.rem(class="form-check-input-login") }}
 
-			{{ form.submit() }}
-		</fieldset>
-</form>
+				{{ form.submit(class="btn btn-outline-info-login") }}
+			</fieldset>
+	</form>
+</div>
 
 </body>
 </html>
