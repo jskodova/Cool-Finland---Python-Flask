@@ -47,7 +47,7 @@ def admin():
 def register():
     form = RegistrationForm()
     if request.method == 'GET':
-        return render_template('register.html', form=form)
+        return render_template('register.html', form=form, method=request.method)
     else:
         valid = form.validate_on_submit()
         if valid:
@@ -72,10 +72,14 @@ def register():
 
             conn.commit()
             conn.close()
-            return render_template('register.html', form=form, valid=valid)
+            return render_template('register.html', form=form, valid=valid, method=request.method)
 
         else:
+<<<<<<< Updated upstream
             return render_template('register.html', form=form, valid=not valid)
+=======
+           return render_template('register.html', form=form, valid=not valid, method=request.method)
+>>>>>>> Stashed changes
 
 
 @app.route("/login", methods=['GET', 'POST'])
