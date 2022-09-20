@@ -1,11 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="../static/main.css">
-	<title>Login</title>
-</head>
+{% extends "layout.html" %}
+{% block content %}
+
 <body>
 	
 {% if error == 1 %}
@@ -15,23 +10,60 @@
 {% endif %}
 
 <div class="content-section-login">
-	<form class="test" method="POST" action="">
-	        <legend class = "logintitle">Log In</legend>
-			{{ form.hidden_tag() }}
-			<fieldset>
+	<div class ="content-login"> 
+		<h3 class="welcome">Welcome to your company login</h3>
+		<hr>
+		<h6> Here you can login to book a reservation for your delivery, and view your reservations! <br>
+			 Use your company credentials to login, or create an account. </h6>    
+			 <h6>
+				Need An Account? <a class="ml-2" href="{{ url_for('register') }}">Sign Up Now</a>
+			 </h6>
+			 <img class="loginimage" src="https://cdn.pixabay.com/photo/2012/04/11/18/12/recycle-29227_960_720.png" alt="Recycle" width="150" height="150">
+	</div>
+	<form class = "test" method="POST" action="">
+		{{ form.hidden_tag() }}
+		<fieldset >
+			<legend class = "logintitle">Log In</legend>
+			<div>
 				{{ form.email.label(class="form-control-label") }}
-				{{ form.email(class="form-control form-control-lg") }}
-
+				{% if form.email.errors %}
+					{{ form.email(class="form-control form-control-lg is-invalid") }}
+					<div>
+						{% for error in form.email.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% else %}
+					{{ form.email(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+			<div>
 				{{ form.passw.label(class="form-control-label") }}
-				{{ form.passw(class="form-control form-control-lg") }}
-
-				{{ form.rem.label(class="form-check-label-login") }}
+				{% if form.passw.errors %}
+					{{ form.passw(class="form-control form-control-lg is-invalid") }}
+					<div>
+						{% for error in form.passw.errors %}
+							<span>{{ error }}</span>
+						{% endfor %}
+					</div>
+				{% else %}
+					{{ form.passw(class="form-control form-control-lg") }}
+				{% endif %}
+			</div>
+			<div>
 				{{ form.rem(class="form-check-input-login") }}
+				{{ form.rem.label(class="form-check-label-login") }}
+			</div>
+		</fieldset>
+		<div>
+			{{ form.submit(class="btn btn-outline-info-login") }}
+		</div>
 
-				{{ form.submit(class="btn btn-outline-info-login") }}
-			</fieldset>
+		<b>
+			<a href="#">Forgot Your Password?</a>
+		</b>
 	</form>
+	<div>
+	</div>
 </div>
-
-</body>
-</html>
+{% endblock content %}
