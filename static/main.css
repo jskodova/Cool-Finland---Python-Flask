@@ -87,7 +87,9 @@ a.article-title:hover {
 
 .content-section-login{
   border: 1px solid black;
-  margin: 1rem;
+  margin: 5rem;
+  margin-left: 20rem;
+  margin-right:20rem;
   padding: 50px;
   text-align: center;
   display:flex;
@@ -132,8 +134,12 @@ input#submit.btn.btn-outline-info-login{
   background-color: lightcyan;
   border: 1px solid blue;
   color: black;
-  padding: 5px 5px;
+  padding: 10px 10px 10px 10px;
   text-decoration: none;
-  margin: 4px 2px;
+  margin: 8px 6px;
   cursor: pointer;
+}
+
+.loginimage{
+  margin-top: 1rem;
 }
