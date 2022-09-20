@@ -1,29 +1,30 @@
 import sqlite3
 from datetime import date, timedelta
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template, request, url_for, flash, redirect, session, g
 from forms import RegistrationForm, LoginForm
 from functools import wraps
+import os
 from passlib.hash import bcrypt
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '7c7b7cd8dacf674501f743dfa8c57d90'
+app.config['SECRET_KEY'] = os.urandom(24)
 
 
-def login_val(username, password):
+def login_val(email, password):
     conn = get_db_connection()
     cur = conn.cursor()
     users = conn.execute('select * from "users"').fetchall()
     conn.close()
-
+    
     hasher = bcrypt.using(rounds=13)
 
     for user in users:
-        if user["email"] == username:
-            print(user['email'] + " " + username)
+        if user["email"] == email:
+            print(user['email'] + " " + email)
             print(password + " " + user["password"])
             print(hasher.verify(password, user["password"]))
             if hasher.verify(password, user["password"]):
-                return True
+                return True              
 
     return False
 
@@ -58,8 +59,8 @@ def register():
             rep_lname = form.rep_lname.data
             rep_pnum = form.rep_pnum.data
 
-            hasher = bcrypt.using(rounds=13)
-            h_passw = hasher.hash(passw)
+            h_passw = bcrypt.generate_password_hash('secret', 12)
+
 
             conn = get_db_connection()
             cur = conn.cursor()
@@ -82,28 +83,46 @@ def register():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    if request.method == 'GET':
-        return render_template('login.html', form=form)
-    else:
+    if request.method == 'POST':
+        session.pop('user', None)
         form_valid = form.validate_on_submit()
-
         if form_valid:
-
             email = form.email.data
             passw = form.passw.data
             rm = form.rem.data
-
+            print("Form is valid")
             print(f"{email} {passw} {rm}")
             logged = login_val(email, passw)
-
             print(logged)
+            conn = get_db_connection()
+            s = (email)
+            user = conn.execute("select * from users where email =?", (s,))
+            if user is not None:
+                data =user.fetchone()
+                password = data['password']
+                print(data['password'])
+                hasher = bcrypt.using(rounds=13)
+                if hasher.verify(passw, password):
+                    app.logger.info('Password Matched')
+                    session['logged_in'] = True 
+                    session['user'] = data['email']
 
-            if logged:
-                return render_template("login.html", form=form, error=None)
-            else:
-                return render_template("login.html", form=form, error=1)
+                    flash('You are now logged in','success')
+                    return render_template("protected.html")
+                # Close Connection
+                user.close()
         else:
             return render_template("login.html", form=form, error=2)
+    elif request.method == 'GET':
+        return render_template('login.html', form=form)
+
+
+@app.route('/protected')
+def protected():
+    if g.user:
+        return render_template("protected.html", user=session['user'])
+    else: 
+        return redirect(url_for("index.html"))
 
 
 @app.route("/schedule", methods=['GET', 'POST'])
