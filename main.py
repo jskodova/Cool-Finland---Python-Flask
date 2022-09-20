@@ -124,6 +124,16 @@ def protected():
     else: 
         return redirect(url_for("index.html"))
 
+@app.before_request
+def before_request():
+    g.user = None
+    if 'user' in session:
+        g.user = session['user']
+
+@app.route('/dropsession')
+def dropsession():
+    session.pop("logged_in", None)
+    return render_template("admin.html")
 
 @app.route("/schedule", methods=['GET', 'POST'])
 def weightschedule():
