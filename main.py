@@ -59,7 +59,8 @@ def register():
             rep_lname = form.rep_lname.data
             rep_pnum = form.rep_pnum.data
 
-            h_passw = bcrypt.generate_password_hash('secret', 12)
+            hasher = bcrypt.using(rounds=13)
+            h_passw = hasher.hash(passw)
 
 
             conn = get_db_connection()
