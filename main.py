@@ -206,13 +206,14 @@ def dayschedule():
     combined = weight_Amount + occupied_w_weight
 
     free_dates = set(all_Dates).difference(set(combined))
+    sortFreeDates = sorted(free_dates)
     print(free_dates)
 
     if request.method == "POST":
         return redirect('/schedule')
     else:
         return render_template('schedule_day.html', enable_switch=disabled, disabled_switch=enable, dates=dates,
-                               today=today, occupied=occupied, all_Dates=all_Dates, free_Dates=free_dates)
+                               today=today, occupied=occupied, all_Dates=all_Dates, sortFreeDates=sortFreeDates)
 
 
 if __name__ == '__main__':
