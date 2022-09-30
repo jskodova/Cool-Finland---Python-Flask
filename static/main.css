@@ -1,6 +1,12 @@
+*{
+  box-sizing: border-box;
+}
 body {
   background: #fafafa;
   color: #333333;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
 }
 
 
@@ -106,7 +112,7 @@ a.article-title:hover {
   background-color: lightcyan;
   border: 1px solid blue;
   color: black;
-  padding: 5px, 5px;
+  padding: 5px 5px;
   text-decoration: none;
   margin: 4px 2px;
   cursor: pointer;
@@ -142,4 +148,65 @@ input#submit.btn.btn-outline-info-login{
 
 .loginimage{
   margin-top: 1rem;
+}
+.dayForm{
+  height: 100vh;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  /*padding-left: 20px;*/
+}
+.fieldset{
+  border: none;
+}
+.field_dates{
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex:2;
+}
+.a_date{
+  margin:0;
+  border: 2px solid black;
+  padding: 0;
+  height: 15vh;
+  text-align: center;
+  width: 15vw;
+  align-items: center;
+  display: grid;
+}
+.field_dates input[type="radio"] {
+  opacity: 0.8;
+  margin: 0;
+  padding: 0;
+  border: 0px;
+  width: 14.77vw;
+  position: absolute;
+  height: 14.66vh;
+  -webkit-appearance: none;
+}
+.field_dates label {
+    background-color: #ddd;
+    height: 100%;
+    font-size: 3vmin;
+    border-radius: 4px;
+    padding: 4.5vh 0 4.5vh 0 ;
+}
+.field_dates input[type="radio"]:checked {
+    background-color: darkblue;
+}
+.bttndiv{
+  flex:1;
+  display: grid;
+  justify-content: center;
+}
+.submitBtnn{
+  height: 20vh;
+  font-size: 3vmin;
+  width: 20vw;
+  border-radius: 5px;
 }

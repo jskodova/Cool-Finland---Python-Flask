@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Schedule</title>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
 </head>
 <body>
 {% block content %}
     <form method="POST">
-        <fieldset {{ enable_switch }}>
+        <fieldset {{ enable_switch }} class="fieldset">
             <label>
                 <input type="number" name="weight" placeholder="Post weight">
                 <input type="submit" name="submit_weight" value="Submit">

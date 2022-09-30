@@ -3,25 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Schedule</title>
+    <link rel="stylesheet" type="text/css" href="/static/main.css">
 </head>
 <body>
 {% block content %}
-    <form method="POST">
-        <fieldset {{ enable_switch }}>
-            <label>
-                <input type="number" name="weight" placeholder="Post weight">
-                <input type="submit" name="submit_weight" value="Submit">
-            </label>
-        </fieldset>
-    </form>
-    <form method = "POST">
-        <fieldset {{disabled_switch}}>
+    <form method="POST" class="dayForm">
+        <fieldset {{disabled_switch}} class="field_dates">
             {% for i in sortFreeDates %}
-                <label>
-                    <input type="button" name="{{i}}" value='{{i}}'>
-                </label>
+                 <p class="a_date"><label for="a_date">{{ i }}</label> <input type="radio"  name="date" value = "{{ i }}"> </p>
             {% endfor %}
         </fieldset>
+        <div class="bttndiv"> <input type="submit" value="SUBMIT" class="submitBtnn"></div>
     </form>
 {% endblock content %}
 </body>
