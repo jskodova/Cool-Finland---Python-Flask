@@ -29,19 +29,26 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            
+            <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+              <a class="navbar-brand navbar-logo" href="#">Cool Finland Oy</a>
+            </ul>
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
-              <li class="nav-item">
+              <li class="nav-item" style="margin-left:2rem;">
                 <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="{{ url_for('dayschedule') }}">Schedule</a>
+                <a class="nav-link active" href="{{ url_for('dayschedule') }}">Schedule your appointment</a>
+              </li>
+            </ul>
+            <ul class="navbar-nav ml-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" href="{{ url_for('register') }}">Register</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" href="{{ url_for('login') }}">Log in</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link active" href="{{ url_for('register') }}">Register</a>
+                <a class="nav-link active" href="{{ url_for('login') }}">Profile</a>
               </li>
             </ul>
             
