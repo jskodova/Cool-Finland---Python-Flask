@@ -124,6 +124,9 @@ def protected():
         return render_template("protected.html", user=session['user'])
     else: 
         return redirect(url_for("index.html"))
+@app.route('/index')
+def index():
+    return render_template("index.html")
 
 @app.before_request
 def before_request():

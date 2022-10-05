@@ -8,16 +8,21 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
-
+    <link rel="stylesheet" type="text/css"  href="static/main.css">
+     
     {% if title %}
+        
         <title>Cool Finland - {{ title }}</title>
+          
     {% else %}
+        
         <title>Cool Finland</title>
+          
     {% endif %}
 </head>
-<body>
-    <header>
+<div class="page-container">
+  <div class="content-wrap">
+    <header class="headbar">
       <nav class="navbar navbar-expand-lg sticky-top navbar-light bg-rgb(255, 228, 196)">
         <div class="container-fluid">
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,7 +32,7 @@
             
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+                <a class="nav-link active" aria-current="page" href="{{ url_for('index') }}">Home</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" href="deliveryreservation.html">Schedule</a>
@@ -44,24 +49,49 @@
         </div>
       </nav>
     </header>
+    <body>
+    
+      
+      
+
+
+    
+       
     <main>
+      
+      
+        
       <div>
         <div>
-          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}
                 <div class="alert alert-{{ category }}">
-                  {{ message }}
+                   
+                    {{ message }}
+                  
                 </div>
-              {% endfor %}
+               {% endfor %}
             {% endif %}
           {% endwith %}
           {% block content %}{% endblock %}
         </div>
       </div>
     </main>
+    </div>
+    <footer>
+      
+          
+          
+            <p>Kiimassuontie 127
+              <br> 30420 Forssa
+              <br> 044 0242700
+            </p>
 
 
+          
+      </div>
+    </footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

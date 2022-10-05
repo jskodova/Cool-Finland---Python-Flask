@@ -1,97 +1,20 @@
-*{
-  box-sizing: border-box;
-}
 body {
   background: #fafafa;
   color: #333333;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
 }
-
-
-.site-header .navbar-nav .nav-link {
-  color: #cbd5db;
-}
-
-.site-header .navbar-nav .nav-link:hover {
-  color: #ffffff;
-}
-
-.site-header .navbar-nav .nav-link.active {
-  font-weight: 500;
-}
-
-.content-section {
-  background: #ffffff;
-  padding: 10px 20px;
-  border: 1px solid #dddddd;
-  border-radius: 3px;
-  margin-bottom: 20px;
-}
-
-
-a.article-title:hover {
-  color: #428bca;
-  text-decoration: none;
-}
-
-.article-content {
-  white-space: pre-line;
-}
-
-.article-img {
-  height: 65px;
-  width: 65px;
-  margin-right: 16px;
-}
-
-.article-metadata {
-  padding-bottom: 1px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid #e3e3e3
-}
-
-.article-metadata a:hover {
-  color: #333;
-  text-decoration: none;
-}
-
-.article-svg {
-  width: 25px;
-  height: 25px;
-  vertical-align: middle;
-}
-
-.account-img {
-  height: 125px;
-  width: 125px;
-  margin-right: 20px;
-  margin-bottom: 16px;
-}
-
-.account-heading {
-  font-size: 2.5rem;
-}
-
+/*login page css*/
 .logintitle {
   text-align: center;
   font-weight: bold;
 }
 
-.form-control-label{
+.form-control-label-lg{
   text-align: center;
   font-weight: bold;
  
 }
-
-.form-control{
-  border: 1px solid black;
-  color: black;
-  padding: 5px 5px;
-}
-
 .content-section-login{
+  background-color: white;
   border: 1px solid black;
   margin: 5rem;
   margin-left: 20rem;
@@ -112,7 +35,7 @@ a.article-title:hover {
   background-color: lightcyan;
   border: 1px solid blue;
   color: black;
-  padding: 5px 5px;
+  padding: 5px, 5px;
   text-decoration: none;
   margin: 4px 2px;
   cursor: pointer;
@@ -149,64 +72,172 @@ input#submit.btn.btn-outline-info-login{
 .loginimage{
   margin-top: 1rem;
 }
-.dayForm{
-  height: 100vh;
-  display: flex;
-  flex-direction: row-reverse;
-  align-items: center;
-  /*padding-left: 20px;*/
-}
-.fieldset{
-  border: none;
-}
-.field_dates{
-  margin: 0;
-  padding: 0;
-  border: 0;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-  flex:2;
-}
-.a_date{
-  margin:0;
-  border: 2px solid black;
-  padding: 0;
-  height: 15vh;
+/*login css ends here*/
+
+
+/*register page css*/
+.content-section-register{
+  background-color: white;
+  border: 1px solid black;
+  margin: 1rem;
+  margin-left: 25rem;
+  margin-right:25rem;
+  padding: 20px;
   text-align: center;
-  width: 15vw;
-  align-items: center;
-  display: grid;
-}
-.field_dates input[type="radio"] {
-  opacity: 0.8;
-  margin: 0;
-  padding: 0;
-  border: 0px;
-  width: 14.77vw;
-  position: absolute;
-  height: 14.66vh;
-  -webkit-appearance: none;
-}
-.field_dates label {
-    background-color: #ddd;
-    height: 100%;
-    font-size: 3vmin;
-    border-radius: 4px;
-    padding: 4.5vh 0 4.5vh 0 ;
-}
-.field_dates input[type="radio"]:checked {
-    background-color: darkblue;
-}
-.bttndiv{
-  flex:1;
-  display: grid;
+  display:flex;
   justify-content: center;
 }
-.submitBtnn{
-  height: 20vh;
-  font-size: 3vmin;
-  width: 20vw;
-  border-radius: 5px;
+
+.content-register{
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.form-control-label-register{
+  font-weight: bold;
+}
+
+#email.form-control.form-control-register{
+  background-color: lightcyan;
+  border: 1px solid blue;
+  color: black;
+  padding: 5px 5px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  height:10%;
+}
+#c_name.form-control.form-control-register{
+  background-color: lightcyan;
+  border: 1px solid blue;
+  color: black;
+  padding: 5px 5px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  height:10%;
+}
+#rep_n.form-control.form-control-register{
+  background-color: lightcyan;
+  border: 1px solid blue;
+  color: black;
+  padding: 5px 5px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  height:10%;
+}
+#rep_ln.form-control.form-control-register{
+  background-color: lightcyan;
+  border: 1px solid blue;
+  color: black;
+  padding: 5px 5px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  height:10%;
+}
+#rep_pnum.form-control.form-control-register{
+  background-color: lightcyan;
+  border: 1px solid blue;
+  color: black;
+  padding: 5px 5px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  height:10%;
+}
+
+#confirm_password.form-control.form-control-register{
+  background-color: lightcyan;
+  border: 1px solid blue;
+  color: black;
+  padding: 5px 5px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+  height:10%;
+}
+input#submit.btn.btn-outline-info-register{
+  background-color: lightcyan;
+  border: 1px solid blue;
+  color: black;
+  padding: 10px 10px 10px 10px;
+  text-decoration: none;
+  margin: 8px 6px;
+  cursor: pointer;
+}
+/* Villes zone */
+.headbar{
+  border: 1px solid black;
+
+}
+.col-10{
+  border: 1px solid black;
+  display: inline;
+  background-color: white;
+  display: flex;
+  margin-left: 7%;
+
+}
+.col-10, h1{
+  display: inline;
+  background-color: white;
+  display: flex;
+  text-align: center;
+  margin-top: 5%;
+  
+
+}
+  .col-10 image {
+    object-fit: contain;
+    align-self: flex-start;
+  }
+  col-5 text {
+    flex: 1 1 auto;
+  }
+  .pic {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+}
+
+.logo {
+display: block;
+margin-left: auto;
+margin-right: auto;
+width: 40%;
+}
+
+.box-4 {
+background-image: url("https://cdn.pixabay.com/photo/2018/04/05/23/59/nature-3294632_1280.jpg");
+background-size:cover;
+}
+header {
+background-color: white;
+}
+footer {
+background-color: white;
+text-align: center;
+border:1px black solid;
+position: absolute;
+bottom: 0;
+width: 100%;
+height: 5.0rem;
+}
+.page-container {
+position: relative;
+min-height: 100vh;
+}
+
+.content-wrap {
+padding-bottom: 2.5rem;    /* Footer height */
+}
+body {
+  background: #fafafa;
+  color: #333333;
+  background-image: url("https://cdn.pixabay.com/photo/2018/04/05/23/59/nature-3294632_1280.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  
 }
