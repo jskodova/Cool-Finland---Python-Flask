@@ -22,8 +22,8 @@ def login_val(email, password):
         if user["email"] == email:
             print(user['email'] + " " + email)
             print(password + " " + user["password"])
-            print(hasher.verify(password, user["password"]))
-            if hasher.verify(password, user["password"]):
+            print(bcrypt.verify(password, user["password"]))
+            if bcrypt.verify(password, user["password"]):
                 return True              
 
     return False
@@ -102,8 +102,7 @@ def login():
                 data =user.fetchone()
                 password = data['password']
                 print(data['password'])
-                hasher = bcrypt.using(rounds=13)
-                if hasher.verify(passw, password):
+                if bcrypt.verify(passw, password):
                     app.logger.info('Password Matched')
                     session['logged_in'] = True 
                     session['user'] = data['email']

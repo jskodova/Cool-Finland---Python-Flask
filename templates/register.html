@@ -1,47 +1,48 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Register</title>
-</head>
-<body>
-	{% if request == "POST" %}
-		{% if not valid %}
-			<p>WRONG FORM INPUT</p>
-		{% else %}
-			<p>USER CREATED</p>
-		{% endif %}
-	{% endif %}
+{% extends "layout.html" %}
+{% block content %}
 
+	{% if request == "POST" %}
+	{% if not valid %}
+		<p>WRONG FORM INPUT</p>
+	{% else %}
+		<p>USER CREATED</p>
+	{% endif %}
+	{% endif %}
+    <div class="content-section-register">
+        <div class ="content-register"> 
+            <h6>Here you can register your company. Please fill in your company's information.</h6> 
+    
 	<form method="POST" action="">
 		{{ form.hidden_tag() }}
 		<fieldset>
-			{{ form.email.label(class="form-control-label") }}
-			{{ form.email(class="form-control form-control-lg") }}
+			{{ form.email.label(class="form-control-label-register") }}
+			{{ form.email(class="form-control form-control-register") }}
 
-			{{ form.passw.label(class="form-control-label") }}
-			{{ form.passw(class="form-control form-control-lg") }}
+			{{ form.passw.label(class="form-control-label-register""form-control-label-register") }}
+			{{ form.passw(class="form-control form-control-register") }}
 			
-			{{ form.confirm_passw.label(class="form-control-label") }}
-			{{ form.confirm_passw(class="form-control form-control-lg") }}
+			{{ form.confirm_passw.label(class="form-control-label-register") }}
+			{{ form.confirm_passw(class="form-control form-control-register") }}
 
-			{{ form.comp.label(class="form-control-label") }}
-			{{ form.comp(class="form-control form-control-lg") }}
+			{{ form.comp.label(class="form-control-label-register") }}
+			{{ form.comp(class="form-control form-control-register") }}
 
-			{{ form.rep_name.label(class="form-control-label") }}
-			{{ form.rep_name(class="form-control form-control-lg") }}
+			{{ form.rep_name.label(class="form-control-label-register") }}
+			{{ form.rep_name(class="form-control form-control-register") }}
 
-			{{ form.rep_lname.label(class="form-control-label") }}
-			{{ form.rep_lname(class="form-control form-control-lg") }}
+			{{ form.rep_lname.label(class="form-control-label-register") }}
+			{{ form.rep_lname(class="form-control form-control-register") }}
 
-			{{ form.rep_pnum.label(class="form-control-label") }}
-			{{ form.rep_pnum(class="form-control form-control-lg") }}
+			{{ form.rep_pnum.label(class="form-control-label-register") }}
+			{{ form.rep_pnum(class="form-control form-control-register") }}
 
-			{{ form.submit(class="form-control form-control-lg") }}
+			{{ form.submit(class="btn btn-outline-info-register") }}
 		</fieldset>
 	</form>
-
-	<p>Already have an account? <a href="{{ url_for("login") }}"> Log in </a></p>
-</body>
-</html>
+	<div>
+		<h6>
+			Already Have An Account? <a class="ml-2" href="{{ url_for('login') }}">Sign In</a>
+		</h6>
+	</div>
+</div>
+{% endblock content %}
