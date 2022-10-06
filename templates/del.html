@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Admin</title>
+</head>
+<body>
+	<h1>Users</h1>
+	{% for user in users %}
+		<div class="users">
+			<h2>ID: {{ user['id'] }}</h2>
+			<h2>EMAIL: {{ user['email'] }}</h2>
+			<h2>PASSWORD: {{ user['password'] }}</h2>
+			<h2>COMPANY NAME: {{ user['comp_name'] }}</h2>
+			<h2>REPRESENTATIVE : {{ user['rep_name'] }} {{ user['rep_lname'] }}</h2>
+			<h2>REP. PHONE NUMBER: {{ user['rep_pnumber'] }}</h2>
+			<h2>PRIORITY: {{ user['priority'] }}</h2>
+		</div>
+	{% endfor %}
+</body>
+</html>
