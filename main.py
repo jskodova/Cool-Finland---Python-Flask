@@ -36,7 +36,7 @@ def get_db_connection():
 def return_data():
     conn = get_db_connection()
     cur = conn.cursor()
-    SQL = "select title, start from deliveriestest;"
+    SQL = "select title, start from deliveries;"
     cur.execute(SQL)
     result_list = cur.fetchall()      #return sql result
     print("fetch result-->",type(result_list))  #is s list type, need to be a dict
@@ -188,7 +188,7 @@ def weightschedule():
     today = date.today()
 
     global dates
-    dates = cur.execute("select weight_amount, start from deliveriestest;").fetchall()
+    dates = cur.execute("select weight_amount, start from deliveries;").fetchall()
     global all_Dates
     all_Dates = list
     all_Dates = []
