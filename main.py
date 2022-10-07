@@ -1,5 +1,5 @@
 import sqlite3
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from flask import Flask, render_template, request, url_for, flash, redirect, session, g, jsonify
 from forms import RegistrationForm, LoginForm
 from functools import wraps
@@ -245,7 +245,16 @@ def dayschedule():
     sortFreeDates = sorted(free_dates)
     print(free_dates)
 
+    insert = """INSERT INTO deliveries(customer_id,weight_amount,delivery_date) VALUES (?,?,?);"""
+
     if request.method == "POST":
+        userDate = datetime.strptime(request.form.get('date'), '%Y-%m-%d')
+        inputDate = datetime.date(userDate)
+        data_tuple = (session['user_id'], int(weight), inputDate)
+        cur.execute(insert, data_tuple)
+        con.commit()
+        print("Done")
+        cur.close()
         return redirect('/schedule')
     else:
         return render_template('schedule_day.html', enable_switch=disabled, disabled_switch=enable, dates=dates,
