@@ -249,7 +249,7 @@ def dayschedule():
     if request.method == "POST":
         userDate = datetime.strptime(request.form.get('date'), '%Y-%m-%d')
         inputDate = datetime.date(userDate)
-        data_tuple = (session['user_id'], int(weight), inputDate)
+        data_tuple = (3, int(weight), inputDate)
         cur.execute(insert, data_tuple)
         con.commit()
         print("Done")
