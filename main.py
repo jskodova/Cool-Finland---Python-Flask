@@ -34,7 +34,6 @@ def get_db_connection():
 
 @app.route('/data')
 def return_data():
-    print("Reading data for the calendar")
     conn = get_db_connection()
     cur = conn.cursor()
     SQL = "select title, start from deliveriestest;"
@@ -213,7 +212,7 @@ def weightschedule():
         
         return redirect(url_for('dayschedule'))
     else:
-        return render_template('calendar.html', disabled_switch=disabled, today=today, all_Dates=all_Dates,
+        return render_template('schedule.html', disabled_switch=disabled, today=today, all_Dates=all_Dates,
                                occupied=occupied)
 def weightrequire(f):
     @wraps(f)
