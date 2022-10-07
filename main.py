@@ -137,6 +137,7 @@ def login():
                     session['logged_in'] = True 
                     session['user'] = data['email']
                     session['user_id'] = data['id']
+                    session['company_name'] = data['comp_name']
                     
 
                     flash('You are now logged in','success')
@@ -243,17 +244,17 @@ def dayschedule():
     sortFreeDates = sorted(free_dates)
 
 
-    insert = """INSERT INTO deliveries(customer_id,weight_amount,delivery_date) VALUES (?,?,?);"""
+    insert = """INSERT INTO deliveries(customer_id,title,v_type,weight_amount,start) VALUES (?,?,?,?,?);"""
 
     if request.method == "POST":
         userDate = datetime.strptime(request.form.get('date'), '%Y-%m-%d')
         inputDate = datetime.date(userDate)
-        data_tuple = (3, int(weight), inputDate)
+        data_tuple = (session['user_id'],session['company_name'],v_type, int(weight), inputDate)
         cur.execute(insert, data_tuple)
         con.commit()
         print("Done")
         cur.close()
-        return redirect('/index.html')
+        return redirect('/index')
     else:
         return render_template('schedule_day.html', enable_switch=disabled, disabled_switch=enable, dates=dates,
                                today=today, occupied=occupied, all_Dates=all_Dates, sortFreeDates=sortFreeDates)

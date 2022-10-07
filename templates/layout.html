@@ -45,32 +45,32 @@
                 <a class="nav-link active" href="{{ url_for('login') }}">Log in</a>
               </li>
             </ul>
-            
+
           </div>
         </div>
       </nav>
     </header>
     <body>
-    
-      
-      
 
 
-    
-       
+
+
+
+
+
     <main>
-      
-      
-        
+
+
+
       <div>
         <div>
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
               {% for category, message in messages %}
                 <div class="alert alert-{{ category }}">
-                   
+
                     {{ message }}
-                  
+
                 </div>
                {% endfor %}
             {% endif %}
@@ -79,19 +79,15 @@
         </div>
       </div>
     </main>
-    </div>
     <footer>
-      
-          
-          
+
+
+
             <p>Kiimassuontie 127
               <br> 30420 Forssa
               <br> 044 0242700
             </p>
 
-
-          
-      </div>
     </footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
