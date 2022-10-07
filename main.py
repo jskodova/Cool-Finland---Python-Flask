@@ -23,9 +23,6 @@ def login_val(email, password):
     
     for user in users:
         if user["email"] == email:
-            print(user['email'] + " " + email)
-            print(password + " " + user["password"])
-            print(bcrypt.verify(password, user["password"]))
             if bcrypt.verify(password, user["password"]):
                 return True              
 
@@ -35,28 +32,25 @@ def login_val(email, password):
 def return_data():
     conn = get_db_connection()
     cur = conn.cursor()
-    SQL = "select title, start from deliveries;"
+    SQL = "select weight_amount, start from deliveries;"
     cur.execute(SQL)
-    result_list = cur.fetchall()      #return sql result
-    print("fetch result-->",type(result_list))  #is s list type, need to be a dict
-
-    deliveries_list = cur.description   # sql key name
-    print("deliveries result -->",type(deliveries_list))
-    #print("header--->",fields)
+    result_list = cur.fetchall()
+    deliveries_list = cur.description
     cur.close()
     conn.close()
         # main part
     column_list = []
     for i in deliveries_list:
         column_list.append(i[0])
-    print("print final column_list",column_list)
-    
+
     global jsonData_list
     jsonData_list = []
     for row in result_list:
         data_dict = {}
         for i in range(len(column_list)):
             data_dict[column_list[i]] = row[i]
+        data_dict['title'] = "Reserved amount: " + str(data_dict['weight_amount'])
+        del data_dict['weight_amount']
         jsonData_list.append(data_dict)
     json_object = json.dumps(jsonData_list, indent=4)
     with open("deliveries.json", "w") as outfile:
@@ -246,7 +240,7 @@ def dayschedule():
     sortFreeDates = sorted(free_dates)
 
 
-    insert = """INSERT INTO deliveries(customer_id,title,v_type,weight_amount,start) VALUES (?,?,?,?,?);"""
+    insert = """INSERT INTO deliveries(customer_id,company,v_type,weight_amount,start) VALUES (?,?,?,?,?);"""
 
     if request.method == "POST":
         userDate = datetime.strptime(request.form.get('date'), '%Y-%m-%d')
