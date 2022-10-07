@@ -180,7 +180,7 @@ def weightschedule():
     disabled = "disabled"
 
     global con
-    con = get_db_connection()
+    con = sqlite3.connect('database.db',check_same_thread=False)
 
     global cur
     cur = con.cursor()
@@ -254,7 +254,7 @@ def dayschedule():
         con.commit()
         print("Done")
         cur.close()
-        return redirect('/schedule')
+        return redirect('/index.html')
     else:
         return render_template('schedule_day.html', enable_switch=disabled, disabled_switch=enable, dates=dates,
                                today=today, occupied=occupied, all_Dates=all_Dates, sortFreeDates=sortFreeDates)
