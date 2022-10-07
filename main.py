@@ -10,69 +10,22 @@ from passlib.hash import bcrypt
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
 
-def login_val(email, password):
-    conn = get_db_connection()
-    cur = conn.cursor()
-    users = conn.execute('select * from "users"').fetchall()
-    conn.close()
-    
-    for user in users:
-        if user["email"] == email:
-            print(user['email'] + " " + email)
-            print(password + " " + user["password"])
-            print(bcrypt.verify(password, user["password"]))
-            if bcrypt.verify(password, user["password"]):
-                return True              
-
-    return False
-
-
 def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     return conn
 
-@app.route('/data')
-def return_data():
+def login_val(email, password):
     conn = get_db_connection()
-    cur = conn.cursor()
-    SQL = "select title, start from deliveries;"
-    cur.execute(SQL)
-    result_list = cur.fetchall()      #return sql result
-    print("fetch result-->",type(result_list))  #is s list type, need to be a dict
-
-    deliveries_list = cur.description   # sql key name
-    print("deliveries result -->",type(deliveries_list))
-    #print("header--->",fields)
-    cur.close()
-    conn.close()
-        # main part
-    column_list = []
-    for i in deliveries_list:
-        column_list.append(i[0])
-    print("print final column_list",column_list)
-    
-    global jsonData_list
-    jsonData_list = []
-    for row in result_list:
-        data_dict = {}
-        for i in range(len(column_list)):
-            data_dict[column_list[i]] = row[i]
-        jsonData_list.append(data_dict)
-    json_object = json.dumps(jsonData_list, indent=4)
-    with open("deliveries.json", "w") as outfile:
-        outfile.write(json_object)
-    with open("deliveries.json", "r") as input_data:
-        return input_data.read()
-
-@app.route("/admin")
-def admin():
-    conn = get_db_connection()
-    cur = conn.cursor()
     users = conn.execute('select * from "users"').fetchall()
     conn.close()
-    return render_template("admin.html", users=users)
+    
+    for user in users:
+        if user["email"] == email:
+            if bcrypt.verify(password, user["password"]):
+                return True              
 
+    return False
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -94,10 +47,6 @@ def register():
 
 
             conn = get_db_connection()
-            cur = conn.cursor()
-
-            print(f"{email} {passw} {h_passw} {comp} {rep_name} {rep_lname} {rep_pnum}")
-
             conn.execute(
                 'insert into "users" (email, password, comp_name, rep_name, rep_lname, rep_pnumber, priority) values (?, ?, ?, ?, ?, ?, ?)'
                 , (email, h_passw, comp, rep_name, rep_lname, rep_pnum, False))
@@ -109,8 +58,6 @@ def register():
         else:
            return render_template('register.html', form=form, valid=not valid, method=request.method)
 
-
-
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
@@ -121,28 +68,21 @@ def login():
             email = form.email.data
             passw = form.passw.data
             rm = form.rem.data
-            print("Form is valid")
-            print(f"{email} {passw} {rm}")
             logged = login_val(email, passw)
-            print(logged)
             conn = get_db_connection()
             s = (email)
             user = conn.execute("select * from users where email =?", (s,))
             if user is not None:
                 data =user.fetchone()
                 password = data['password']
-                print(data['password'])
                 if bcrypt.verify(passw, password):
                     app.logger.info('Password Matched')
                     session['logged_in'] = True 
                     session['user'] = data['email']
-                    session['user_id'] = data['id']
                     session['company_name'] = data['comp_name']
-                    
 
                     flash('You are now logged in','success')
                     return render_template("index.html")
-                # Close Connection
                 user.close()
         else:
             return render_template("login.html", form=form, error=2)
@@ -150,12 +90,21 @@ def login():
         return render_template('login.html', form=form)
 
 
+@app.route("/admin")
+def admin():
+    conn = get_db_connection()
+    users = conn.execute('select * from "users"').fetchall()
+    conn.close()
+    return render_template("admin.html", users=users)
+
 @app.route('/protected')
 def protected():
     if g.user:
         return render_template("protected.html", user=session['user'])
     else: 
         return redirect(url_for("index.html"))
+
+        
 @app.route('/index')
 def index():
     return render_template("index.html")
@@ -169,7 +118,34 @@ def before_request():
 @app.route('/dropsession')
 def dropsession():
     session.pop("logged_in", None)
-    return render_template("admin.html")
+    return redirect('/index')
+
+@app.route('/data')
+def return_data():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    SQL = "select title, start from deliveries;"
+    cur.execute(SQL)
+    result_list = cur.fetchall()     
+    deliveries_list = cur.description
+    cur.close()
+    conn.close()
+    column_list = []
+    for i in deliveries_list:
+        column_list.append(i[0])
+
+    global jsonData_list
+    jsonData_list = []
+    for row in result_list:
+        data_dict = {}
+        for i in range(len(column_list)):
+            data_dict[column_list[i]] = row[i]
+        jsonData_list.append(data_dict)
+    json_object = json.dumps(jsonData_list, indent=4)
+    with open("deliveries.json", "w") as outfile:
+        outfile.write(json_object)
+    with open("deliveries.json", "r") as input_data:
+        return input_data.read()
 
 @app.route('/schedule', methods=['GET', 'POST'])
 def weightschedule():
@@ -233,8 +209,6 @@ def weightrequire(f):
 @app.route("/schedule/date", methods=['GET', 'POST'])
 @weightrequire
 def dayschedule():
-    print("occupied dates:")
-    print(occupied)
     weight_Amount = []
     for i in dates:
         if int(i[0]) + int(weight) > 40:
@@ -256,7 +230,6 @@ def dayschedule():
         data_tuple = (session['user_id'],session['company_name'],v_type, int(weight), inputDate)
         cur.execute(insert, data_tuple)
         con.commit()
-        print("Done")
         cur.close()
         return redirect('/index')
     else:
