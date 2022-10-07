@@ -1,15 +1,14 @@
 import sqlite3
-import time
-from datetime import date, timedelta, datetime
-from flask import Flask, render_template, request, url_for, flash, redirect, session, g
+from datetime import date, timedelta
+from flask import Flask, render_template, request, url_for, flash, redirect, session, g, jsonify
 from forms import RegistrationForm, LoginForm
 from functools import wraps
 import os
+import json
 from passlib.hash import bcrypt
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
-
 
 def login_val(email, password):
     conn = get_db_connection()
@@ -17,8 +16,6 @@ def login_val(email, password):
     users = conn.execute('select * from "users"').fetchall()
     conn.close()
     
-    hasher = bcrypt.using(rounds=13)
-
     for user in users:
         if user["email"] == email:
             print(user['email'] + " " + email)
@@ -35,6 +32,39 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+@app.route('/data')
+def return_data():
+    print("Reading data for the calendar")
+    conn = get_db_connection()
+    cur = conn.cursor()
+    SQL = "select title, start from deliveriestest;"
+    cur.execute(SQL)
+    result_list = cur.fetchall()      #return sql result
+    print("fetch result-->",type(result_list))  #is s list type, need to be a dict
+
+    deliveries_list = cur.description   # sql key name
+    print("deliveries result -->",type(deliveries_list))
+    #print("header--->",fields)
+    cur.close()
+    conn.close()
+        # main part
+    column_list = []
+    for i in deliveries_list:
+        column_list.append(i[0])
+    print("print final column_list",column_list)
+    
+    global jsonData_list
+    jsonData_list = []
+    for row in result_list:
+        data_dict = {}
+        for i in range(len(column_list)):
+            data_dict[column_list[i]] = row[i]
+        jsonData_list.append(data_dict)
+    json_object = json.dumps(jsonData_list, indent=4)
+    with open("deliveries.json", "w") as outfile:
+        outfile.write(json_object)
+    with open("deliveries.json", "r") as input_data:
+        return input_data.read()
 
 @app.route("/admin")
 def admin():
@@ -108,6 +138,7 @@ def login():
                     session['logged_in'] = True 
                     session['user'] = data['email']
                     session['user_id'] = data['id']
+                    
 
                     flash('You are now logged in','success')
                     return render_template("protected.html")
@@ -140,7 +171,7 @@ def dropsession():
     session.pop("logged_in", None)
     return render_template("admin.html")
 
-@app.route("/schedule", methods=['GET', 'POST'])
+@app.route('/schedule', methods=['GET', 'POST'])
 def weightschedule():
     global enable
     enable = "enable"
@@ -149,7 +180,7 @@ def weightschedule():
     disabled = "disabled"
 
     global con
-    con = sqlite3.connect("database.db", check_same_thread=False)
+    con = get_db_connection()
 
     global cur
     cur = con.cursor()
@@ -158,8 +189,7 @@ def weightschedule():
     today = date.today()
 
     global dates
-    dates = cur.execute("SELECT weight_amount,delivery_date FROM deliveries").fetchall()
-
+    dates = cur.execute("select weight_amount, start from deliveriestest;").fetchall()
     global all_Dates
     all_Dates = list
     all_Dates = []
@@ -175,30 +205,32 @@ def weightschedule():
 
     if request.method == "POST":
         global weight
+        global c_name
+        global v_type
         weight = request.form.get('weight')
-        # cur.execute("INSERT INTO deliveries VALUES(?, ?, ?, ?)", (3,3,20,"2022-06-24"))
-        # con.commit()
-        return redirect('/schedule/date')
+        c_name = request.form.get('c_name')
+        v_type = request.form.get('v_type')
+        
+        return redirect(url_for('dayschedule'))
     else:
-        return render_template('schedule.html', disabled_switch=disabled, today=today, all_Dates=all_Dates,
+        return render_template('calendar.html', disabled_switch=disabled, today=today, all_Dates=all_Dates,
                                occupied=occupied)
-
-
 def weightrequire(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         try:
             weight
         except NameError:
-            return redirect('/schedule')
+            return redirect('/calendar')
         return f(*args, **kwargs)
 
     return decorated_function
 
-
 @app.route("/schedule/date", methods=['GET', 'POST'])
 @weightrequire
 def dayschedule():
+    print("occupied dates:")
+    print(occupied)
     weight_Amount = []
     for i in dates:
         if int(i[0]) + int(weight) > 40:
@@ -211,17 +243,9 @@ def dayschedule():
 
     free_dates = set(all_Dates).difference(set(combined))
     sortFreeDates = sorted(free_dates)
-
-    insert = """INSERT INTO deliveries(customer_id,weight_amount,delivery_date) VALUES (?,?,?);"""
+    print(free_dates)
 
     if request.method == "POST":
-        userDate = datetime.strptime(request.form.get('date'), '%Y-%m-%d')
-        inputDate=datetime.date(userDate)
-        data_tuple =(session['user_id'],int(weight),inputDate)
-        cur.execute(insert, data_tuple)
-        con.commit()
-        print("Done")
-        cur.close()
         return redirect('/schedule')
     else:
         return render_template('schedule_day.html', enable_switch=disabled, disabled_switch=enable, dates=dates,
