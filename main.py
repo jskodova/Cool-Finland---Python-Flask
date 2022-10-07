@@ -141,7 +141,7 @@ def login():
                     
 
                     flash('You are now logged in','success')
-                    return render_template("protected.html")
+                    return render_template("index.html")
                 # Close Connection
                 user.close()
         else:
@@ -173,48 +173,52 @@ def dropsession():
 
 @app.route('/schedule', methods=['GET', 'POST'])
 def weightschedule():
-    global enable
-    enable = "enable"
+    if g.user:
+        global enable
+        enable = "enable"
 
-    global disabled
-    disabled = "disabled"
+        global disabled
+        disabled = "disabled"
 
-    global con
-    con = sqlite3.connect('database.db',check_same_thread=False)
+        global con
+        con = sqlite3.connect('database.db',check_same_thread=False)
 
-    global cur
-    cur = con.cursor()
+        global cur
+        cur = con.cursor()
 
-    global today
-    today = date.today()
+        global today
+        today = date.today()
 
-    global dates
-    dates = cur.execute("select weight_amount, start from deliveries;").fetchall()
-    global all_Dates
-    all_Dates = list
-    all_Dates = []
-    for i in range(21):
-        free = today + timedelta(days=i)
-        day_Free = free.strftime('%Y-%m-%d')
-        all_Dates.append(day_Free)
+        global dates
+        dates = cur.execute("select weight_amount, start from deliveries;").fetchall()
+        global all_Dates
+        all_Dates = list
+        all_Dates = []
+        for i in range(21):
+            free = today + timedelta(days=i)
+            day_Free = free.strftime('%Y-%m-%d')
+            all_Dates.append(day_Free)
 
-    global occupied
-    occupied = []
-    for occ in dates:
-        occupied.append(occ[1])
+        global occupied
+        occupied = []
+        for occ in dates:
+            occupied.append(occ[1])
 
-    if request.method == "POST":
-        global weight
-        global c_name
-        global v_type
-        weight = request.form.get('weight')
-        c_name = request.form.get('c_name')
-        v_type = request.form.get('v_type')
-        
-        return redirect(url_for('dayschedule'))
-    else:
-        return render_template('schedule.html', disabled_switch=disabled, today=today, all_Dates=all_Dates,
-                               occupied=occupied)
+        if request.method == "POST":
+            global weight
+            global c_name
+            global v_type
+            weight = request.form.get('weight')
+            c_name = request.form.get('c_name')
+            v_type = request.form.get('v_type')
+            
+            return redirect(url_for('dayschedule'))
+        else:
+            return render_template('schedule.html', disabled_switch=disabled, today=today, all_Dates=all_Dates,
+                                occupied=occupied)
+    else: 
+            return redirect('/index')
+
 def weightrequire(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):

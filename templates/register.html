@@ -1,4 +1,9 @@
-{% extends "layout.html" %}
+{% if session.user %}      
+    {% extends "protected.html" %}    
+{% else %}
+    {% extends "layout.html" %}
+{% endif %}
+
 {% block content %}
 
 	{% if request == "POST" %}
