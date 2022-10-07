@@ -221,7 +221,7 @@ def weightrequire(f):
         try:
             weight
         except NameError:
-            return redirect('/calendar')
+            return redirect('/schedule')
         return f(*args, **kwargs)
 
     return decorated_function
@@ -240,10 +240,9 @@ def dayschedule():
 
     occupied_w_weight = list(weight_amount_set - occupied_set)
     combined = weight_Amount + occupied_w_weight
-
     free_dates = set(all_Dates).difference(set(combined))
     sortFreeDates = sorted(free_dates)
-    print(free_dates)
+
 
     insert = """INSERT INTO deliveries(customer_id,weight_amount,delivery_date) VALUES (?,?,?);"""
 

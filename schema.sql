@@ -42,4 +42,4 @@ VALUES (2,2,"Kuonepeikko Oy","small truck",50,"2022-10-10");
 
 
 INSERT INTO deliveriestest (id, customer_id, title, v_type, weight_amount, start)
-VALUES (3,3,"Tavastia","small truck",80,"2022-10-01");
+VALUES (3,3,"Tavastia","small truck",20,"2022-10-15");
