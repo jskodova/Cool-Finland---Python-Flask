@@ -10,7 +10,7 @@
     <form method="POST" class="dayForm">
         <fieldset {{disabled_switch}} class="field_dates">
             {% for i in sortFreeDates %}
-                 <p class="a_date"><label for="a_date">{{ i }}</label> <input type="radio"  name="date" value = "{{ i }}"> </p>
+                 <p class="a_date"><label for="a_date">{{ i }}</label> <input type="radio"  name="date" value = {{ i }}> </p>
             {% endfor %}
         </fieldset>
         <div class="bttndiv"> <input type="submit" value="SUBMIT" class="submitBtnn"></div>

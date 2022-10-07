@@ -18,6 +18,6 @@ create table deliveries (
 	id integer primary key autoincrement,
 	customer_id integer,
 	weight_amount float(3) not null,
-	delivery_date datetime not null,
+	delivery_date date not null,
 	foreign key (customer_id) references users (id)
 );

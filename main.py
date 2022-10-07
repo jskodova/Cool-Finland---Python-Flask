@@ -1,5 +1,6 @@
 import sqlite3
-from datetime import date, timedelta
+import time
+from datetime import date, timedelta, datetime
 from flask import Flask, render_template, request, url_for, flash, redirect, session, g
 from forms import RegistrationForm, LoginForm
 from functools import wraps
@@ -106,6 +107,7 @@ def login():
                     app.logger.info('Password Matched')
                     session['logged_in'] = True 
                     session['user'] = data['email']
+                    session['user_id'] = data['id']
 
                     flash('You are now logged in','success')
                     return render_template("protected.html")
@@ -147,7 +149,7 @@ def weightschedule():
     disabled = "disabled"
 
     global con
-    con = sqlite3.connect("database.db")
+    con = sqlite3.connect("database.db", check_same_thread=False)
 
     global cur
     cur = con.cursor()
@@ -209,9 +211,17 @@ def dayschedule():
 
     free_dates = set(all_Dates).difference(set(combined))
     sortFreeDates = sorted(free_dates)
-    print(free_dates)
+
+    insert = """INSERT INTO deliveries(customer_id,weight_amount,delivery_date) VALUES (?,?,?);"""
 
     if request.method == "POST":
+        userDate = datetime.strptime(request.form.get('date'), '%Y-%m-%d')
+        inputDate=datetime.date(userDate)
+        data_tuple =(session['user_id'],int(weight),inputDate)
+        cur.execute(insert, data_tuple)
+        con.commit()
+        print("Done")
+        cur.close()
         return redirect('/schedule')
     else:
         return render_template('schedule_day.html', enable_switch=disabled, disabled_switch=enable, dates=dates,
