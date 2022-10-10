@@ -23,14 +23,3 @@ create table deliveries (
 	foreign key (customer_id) references users (id),
 	foreign key (company) references users (comp_name)
 );
-
-
-INSERT INTO deliveries (id, customer_id, company, v_type, weight_amount, start)
-VALUES (1,1,"Revisol Oy","small truck",50,"2022-10-24");
-
-INSERT INTO deliveries (id, customer_id, company, v_type, weight_amount, start)
-VALUES (2,2,"Kuonepeikko Oy","small truck",50,"2022-10-10");
-
-
-INSERT INTO deliveries (id, customer_id, company, v_type, weight_amount, start)
-VALUES (3,3,"Tavastia","small truck",20,"2022-10-15");

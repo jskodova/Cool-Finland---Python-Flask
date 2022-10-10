@@ -97,7 +97,7 @@ def register():
 
             conn.commit()
             conn.close()
-            return render_template('register.html', form=form, valid=valid, method=request.method)
+            return render_template('index.html', form=form, valid=valid, method=request.method)
 
         else:
            return render_template('register.html', form=form, valid=not valid, method=request.method)
@@ -106,6 +106,7 @@ def register():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
+
     form = LoginForm()
     if request.method == 'POST':
         session.pop('user', None)
@@ -148,7 +149,7 @@ def protected():
         return render_template("protected.html", user=session['user'])
     else: 
         return redirect(url_for("index.html"))
-@app.route('/index')
+@app.route('/')
 def index():
     return render_template("index.html")
 
@@ -160,8 +161,10 @@ def before_request():
 
 @app.route('/dropsession')
 def dropsession():
-    session.pop("logged_in", None)
-    return redirect('/index')
+    session.pop("logged_out", None)
+    session.clear()
+    render_template('layout.html')
+    return redirect('/')
 
 @app.route('/schedule', methods=['GET', 'POST'])
 def weightschedule():
@@ -181,6 +184,8 @@ def weightschedule():
         global today
         today = date.today()
 
+        global weight
+
         global dates
         dates = cur.execute("select weight_amount, start from deliveries;").fetchall()
         global all_Dates
@@ -197,7 +202,6 @@ def weightschedule():
             occupied.append(occ[1])
 
         if request.method == "POST":
-            global weight
             global c_name
             global v_type
             weight = request.form.get('weight')
@@ -209,7 +213,7 @@ def weightschedule():
             return render_template('schedule.html', disabled_switch=disabled, today=today, all_Dates=all_Dates,
                                 occupied=occupied)
     else: 
-            return redirect('/index')
+            return redirect('/')
 
 def weightrequire(f):
     @wraps(f)
@@ -225,6 +229,7 @@ def weightrequire(f):
 @app.route("/schedule/date", methods=['GET', 'POST'])
 @weightrequire
 def dayschedule():
+    global weight
     print("occupied dates:")
     print(occupied)
     weight_Amount = []
@@ -250,7 +255,8 @@ def dayschedule():
         con.commit()
         print("Done")
         cur.close()
-        return redirect('/index')
+        del  weight
+        return redirect('/')
     else:
         return render_template('schedule_day.html', enable_switch=disabled, disabled_switch=enable, dates=dates,
                                today=today, occupied=occupied, all_Dates=all_Dates, sortFreeDates=sortFreeDates)
